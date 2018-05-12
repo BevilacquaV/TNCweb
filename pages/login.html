@@ -22,7 +22,7 @@
 
     <!-- Custom Fonts -->
     <link href="../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -33,6 +33,32 @@
 	body{
 	background-image: url("../images/google-maps.jpg");}
 	</style>
+	<script type="text/javascript">
+	 $(document).ready(function() {
+               $("#submit").click(function(){
+                   $.ajax({
+                       url: "../script_tncweb/auth.php",
+                       type: "POST",
+                       data: {
+                           'EMAIL': $("#email").val(),
+                           'PASSWORD': $("#password").val()
+                       },
+                       dataType: "JSON",
+                       success: function (jsonStr) {
+                           //alert(JSON.stringify(jsonStr));
+						   if(jsonStr['ERROR']=='none')
+						   {
+								window.location.href = "./index.php";
+						   }
+						   else
+						   {
+						    $("#message").text('Le crendenziali che hai inserito non sono corrette!');
+						   }
+                       }
+                   });
+               });
+           });
+</script>
 </head>
 
 <body>
@@ -42,24 +68,22 @@
             <div class="col-md-4 col-md-offset-4">
                 <div class="login-panel panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="panel-title">TNC project</h3>
+                        <h3 class="panel-title">TNCapp</h3>
                     </div>
                     <div class="panel-body">
-                        <form role="form" method="POST" action="login.php" name="loginForm">
+                        <form role="form" method="POST" name="loginForm">
                             <fieldset>
                                 <div class="form-group">
-                                    <input class="form-control" placeholder="E-mail" name="email" type="email" autofocus>
+                                    <input class="form-control" placeholder="E-mail" name="email" type="email" autofocus id="email">
                                 </div>
                                 <div class="form-group">
-                                    <input class="form-control" placeholder="Password" name="password" type="password" value="">
+                                    <input class="form-control" placeholder="Password" name="password" type="password" value="" id="password">
                                 </div>
-                                <div class="checkbox">
-                                    <label>
-                                        <input name="remember" type="checkbox" value="Remember Me">Remember Me
-                                    </label>
+								 <div class="form-group">
+                                    <label id="message" style="color:blue;"></label>
                                 </div>
                                 <!-- Change this to a button or input when using this as a form -->
-                                <button type="button" class="btn btn-primary btn-lg btn-block" onclick="">Login</button>
+                                <button type="button" class="btn btn-primary btn-lg btn-block" id="submit">Login</button>
 								<p></p>
 								 <p class="text-center">
                   <a href="singup.html" class="fliper-btn" style="color:green;">Create new account?</a>
